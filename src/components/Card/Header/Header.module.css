@@ -1,0 +1,16 @@
+.header nav {
+  border-bottom: 1px solid #ccc;
+}
+
+.header div {
+  display: flex;
+  justify-content: flex-end;
+  height: 20px;
+  align-items: center;
+  padding: 10px;
+}
+
+.header img {
+  width: 16px;
+  height: 16px;
+}
