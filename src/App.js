@@ -15,6 +15,23 @@ export default function App() {
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const [cardEdit, setCardEdit] = useState({
+    item: {},
+    isEditable: false,
+  });
+  const editCartHandler = (item) => {
+    setCardEdit((prev) => {
+      return {
+        ...prev,
+        item,
+        isEditable: !prev.isEditable,
+      };
+    });
+
+    if (cardEdit.isEditable) {
+      editCard(item.id, { body: item.body });
+    }
+  };
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const removeCard = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -23,10 +40,10 @@ export default function App() {
     setOriginalData((prevData) => [...prevData, newData]);
     setData((prevData) => [...prevData, newData]);
   };
-  const editCard = (id) => {
+  const editCard = (id, updateItem) => {
     setData((prevData) =>
       prevData.map((item) =>
-        item.id === id ? { ...item, isBlur: !item.isBlur } : item
+        item.id === id ? { ...item, ...updateItem } : item
       )
     );
   };
@@ -51,16 +68,19 @@ export default function App() {
         </header>
         <main className='App-main'>
           {currentItems.length !== 0 ? (
-            currentItems.map((item) => (
-              <Card
-                key={item.id}
-                id={item.id}
-                item={item}
-                removeCard={removeCard}
-                editCard={editCard}
-                isBlur={item.isBlur}
-              />
-            ))
+            currentItems.map((item) => {
+              return (
+                <Card
+                  key={item.id}
+                  id={item.id}
+                  item={item}
+                  removeCard={removeCard}
+                  editCard={editCard}
+                  cardEdit={cardEdit}
+                  editCartHandler={editCartHandler}
+                />
+              );
+            })
           ) : (
             <>
               <p className='App-para'>No More Card</p>
