@@ -9,6 +9,7 @@
   flex-direction: row-reverse;
   padding: 10px 8px;
   background-color: #252525;
+  margin-bottom: 16px;
 }
 
 .App-header input {
@@ -40,6 +41,14 @@
   outline: none;
   background-color: #252525;
   border-radius: 4px;
+}
+
+.App-para {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 406px;
 }
 
 @media (max-width: 266px) {

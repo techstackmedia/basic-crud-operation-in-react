@@ -50,16 +50,22 @@ export default function App() {
           <Search handleSearch={handleSearch} />
         </header>
         <main className='App-main'>
-          {currentItems.map((item) => (
-            <Card
-              key={item.id}
-              id={item.id}
-              item={item}
-              removeCard={removeCard}
-              editCard={editCard}
-              isBlur={item.isBlur}
-            />
-          ))}
+          {currentItems.length !== 0 ? (
+            currentItems.map((item) => (
+              <Card
+                key={item.id}
+                id={item.id}
+                item={item}
+                removeCard={removeCard}
+                editCard={editCard}
+                isBlur={item.isBlur}
+              />
+            ))
+          ) : (
+            <>
+              <p className='App-para'>No More Card</p>
+            </>
+          )}
         </main>
       </div>
       <div className='App-pagination'>
