@@ -17,6 +17,7 @@
 button {
   background-color: transparent;
   border-color: transparent;
+  user-select: none;
   cursor: pointer;
 }
 

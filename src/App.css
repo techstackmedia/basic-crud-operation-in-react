@@ -1,11 +1,6 @@
 .App {
   font-family: Arial, Helvetica, sans-serif;
-}
-.App-main {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
+  min-height: 406px;
 }
 
 .App-header {
@@ -18,6 +13,33 @@
 
 .App-header input {
   border: 1px solid #ccc;
+}
+
+.App-main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.App-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.App-pagination button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  outline: none;
+  background-color: #252525;
+  border-radius: 4px;
 }
 
 @media (max-width: 266px) {
