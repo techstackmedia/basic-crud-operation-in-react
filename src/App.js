@@ -23,6 +23,7 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   const fetchAllData = async () => {
     try {
       const response = await fetch(`${BASE_URL}?_page=${currentItems}`, {
