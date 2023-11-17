@@ -22,7 +22,6 @@
     flex-wrap: wrap;
     gap: 8px;
     align-items: center;
-    min-height: 406px;
     margin: auto;
 }
 
@@ -30,6 +29,8 @@
   display: flex;
   justify-content: center;
   gap: 4px;
+  margin-block: 20px;
+
 }
 
 .App-pagination button {
