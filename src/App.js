@@ -17,12 +17,12 @@ export default function App() {
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const [error, setError] = useState(null);
   const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
-  
+
   useEffect(() => {
     fetchAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const fetchAllData = async () => {
     try {
       const response = await fetch(`${BASE_URL}?_page=${currentItems}`, {
@@ -59,7 +59,7 @@ export default function App() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const removeCard = async (id) => {
-    await fetch(`BASE_URL${id}`, {
+    await fetch(`${BASE_URL}/${id}`, {
       method: 'DELETE',
     });
     setData(data.filter((item) => item.id !== id));
@@ -118,7 +118,7 @@ export default function App() {
             'Content-Type': 'application/json',
           },
         });
-  
+
         if (!response.ok) {
           throw new Error('Error searching cards');
         } else {
@@ -130,7 +130,6 @@ export default function App() {
       setError(e);
     }
   };
-  
 
   return (
     <>
@@ -156,10 +155,15 @@ export default function App() {
               );
             })
           ) : (
-            <>
-              <p className='App-para'>No More Card</p>
-            </>
+            <p className='App-para'>
+              <span>No More Card</span>
+            </p>
           )}
+          {error ? (
+            <p className='App-error'>
+              <span>{error}</span>
+            </p>
+          ) : null}
         </main>
       </div>
       <div className='App-pagination'>
