@@ -28,10 +28,9 @@ export default function App() {
       };
     });
 
-    if (cardEdit.isEditable) {
-      editCard(item.id, { body: item.body });
-    }
+    editCard(item.id, { body: item.body });
   };
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const removeCard = (id) => {
     setData(data.filter((item) => item.id !== id));

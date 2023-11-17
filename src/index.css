@@ -34,6 +34,11 @@ textarea {
   resize: none;
 }
 
+.saveButton {
+  color: blue;
+  margin-top: 5px;
+}
+
 @media (max-width: 768px) {
   .card {
     width: 100%;

@@ -5,13 +5,34 @@ import { useEffect, useState } from 'react';
 import deleteIcon from '../../images/delete-icon.png';
 import editIcon from '../../images/edit-icon.png';
 
-const Card = ({ item, removeCard, id, editCard, editCartHandler, cardEdit }) => {
+const Card = ({
+  item,
+  removeCard,
+  id,
+  editCard,
+  editCartHandler,
+  cardEdit,
+}) => {
   const [postContent, setPostContent] = useState(item.body ?? '');
+
   useEffect(() => {
     if (cardEdit.isEditable === true && cardEdit.item.id === id) {
       setPostContent(cardEdit.item.body);
     }
-  }, [cardEdit, id, setPostContent])
+  }, [cardEdit, id, setPostContent]);
+
+  const handleTextareaChange = (e) => {
+    setPostContent(e.target.value);
+  };
+
+  // const handleSaveClick = () => {
+  //   editCard(id, { body: postContent });
+  //   editCartHandler(item);
+  // };
+
+  const handleSaveClick = () => {
+    editCartHandler({ ...item, body: postContent });
+  };
 
   return (
     <div className='card'>
@@ -32,10 +53,12 @@ const Card = ({ item, removeCard, id, editCard, editCartHandler, cardEdit }) => 
         }
       >
         {cardEdit.isEditable === true && cardEdit.item.id === id ? (
-          <textarea
-            value={postContent}
-            onChange={(e) => setPostContent(e.target.value)}
-          />
+          <>
+            <textarea value={postContent} onChange={handleTextareaChange} />
+            <button className='saveButton' onClick={handleSaveClick}>
+              Save
+            </button>
+          </>
         ) : (
           postContent
         )}
