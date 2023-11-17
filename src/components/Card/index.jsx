@@ -25,11 +25,6 @@ const Card = ({
     setPostContent(e.target.value);
   };
 
-  // const handleSaveClick = () => {
-  //   editCard(id, { body: postContent });
-  //   editCartHandler(item);
-  // };
-
   const handleSaveClick = () => {
     editCartHandler({ ...item, body: postContent });
   };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from './components/Card';
 import './App.css';
 import cardData from './data';
@@ -7,6 +7,7 @@ import Search from './components/Search';
 import logo from './logo.svg';
 
 const ITEMS_PER_PAGE = 6;
+const BASE_URL = 'http://localhost:5000/cardData';
 
 export default function App() {
   const [originalData, setOriginalData] = useState(cardData);
@@ -14,7 +15,32 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const [error, setError] = useState(null);
+  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+  
+  useEffect(() => {
+    fetchAllData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  const fetchAllData = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}?_page=${currentItems}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Error in getting data');
+      } else {
+        const dataList = await response.json();
+        setData(dataList);
+      }
+    } catch (e) {
+      setError(error);
+    }
+  };
   const [cardEdit, setCardEdit] = useState({
     item: {},
     isEditable: false,
@@ -32,30 +58,79 @@ export default function App() {
   };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const removeCard = (id) => {
+  const removeCard = async (id) => {
+    await fetch(`BASE_URL${id}`, {
+      method: 'DELETE',
+    });
     setData(data.filter((item) => item.id !== id));
   };
-  const addCard = (newData) => {
-    setOriginalData((prevData) => [...prevData, newData]);
-    setData((prevData) => [...prevData, newData]);
-  };
-  const editCard = (id, updateItem) => {
-    setData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, ...updateItem } : item
-      )
-    );
-  };
-  const handleSearch = (searchTerm) => {
-    if (searchTerm.trim() === '') {
-      setData(originalData);
-    } else {
-      const filteredCards = originalData.filter((item) =>
-        item.body.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setData(filteredCards);
+  const addCard = async (newData) => {
+    try {
+      const response = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      });
+      if (!response.ok) {
+        throw new Error('Can add Card');
+      } else {
+        const dataAdd = await response.json();
+        setOriginalData((prevData) => [...prevData, dataAdd]);
+        setData((prevData) => [...prevData, dataAdd]);
+      }
+    } catch (e) {
+      setError(e);
     }
   };
+  const editCard = async (id, updateItem) => {
+    try {
+      const response = await fetch(`${BASE_URL}/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateItem),
+      });
+      if (!response.ok) {
+        throw new Error('Can not Edit Card');
+      } else {
+        const dataEdit = await response.json();
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === id ? { ...item, ...dataEdit } : item
+          )
+        );
+      }
+    } catch (e) {
+      setError(e);
+    }
+  };
+  const handleSearch = async (searchTerm) => {
+    try {
+      if (searchTerm.trim() === '') {
+        fetchAllData();
+      } else {
+        const response = await fetch(`${BASE_URL}?body_like=${searchTerm}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error searching cards');
+        } else {
+          const filteredCards = await response.json();
+          setData(filteredCards);
+        }
+      }
+    } catch (e) {
+      setError(e);
+    }
+  };
+  
 
   return (
     <>
