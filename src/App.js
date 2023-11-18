@@ -65,7 +65,7 @@ export default function App() {
         }
       );
       if (!response.ok) {
-        throw new Error('Error In Getting Data');
+        throw new Error('Error fetching data. Could not retrieve data');
       } else {
         const dataList = await response.json();
         setData(dataList);
@@ -87,9 +87,9 @@ export default function App() {
       });
 
       if (!response.ok) {
-        throw new Error(`Error deleting card with ID ${id}`);
+        throw new Error('Error deleting card. Could not delete the card');
       }
-      const dataRemove = data.filter((item) => item.id !== id)
+      const dataRemove = data.filter((item) => item.id !== id);
       setData(dataRemove);
     } catch (e) {
       setError(e.message);
@@ -108,7 +108,7 @@ export default function App() {
         body: JSON.stringify(newData),
       });
       if (!response.ok) {
-        throw new Error("Can't Add Card");
+        throw new Error('Error adding card. Could not add the card');
       } else {
         const dataAdd = await response.json();
         setData((prevData) => [...prevData, dataAdd]);
@@ -130,7 +130,7 @@ export default function App() {
         body: JSON.stringify(updateItem),
       });
       if (!response.ok) {
-        throw new Error('Can Not Edit Card');
+        throw new Error('Error editing card. Could not edit the card');
       } else {
         const dataEdit = await response.json();
         setData((prevData) =>
@@ -159,7 +159,9 @@ export default function App() {
         });
 
         if (!response.ok) {
-          throw new Error('Error Searching Cards');
+          throw new Error(
+            'Error searching cards. Could not perform the search'
+          );
         } else {
           const filteredCards = await response.json();
           setData(filteredCards);
@@ -197,7 +199,7 @@ export default function App() {
           ) : (
             <div className='App-log'>
               <p className='App-empty'>
-                <span>No More Card</span>
+                <span>No More Cards</span>
               </p>
             </div>
           )}
