@@ -1,5 +1,5 @@
 import EditButton from '../../shared/EditButton';
-import bodyModule from './Body.module.css';
+import bodyModule from './index.module.css';
 
 const Body = ({
   children,

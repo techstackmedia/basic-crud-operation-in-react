@@ -4,7 +4,7 @@ import Card from './components/Card';
 import Search from './components/Search';
 import './App.css';
 import logo from './logo.svg';
-import Spinner from './components/Spinner/Spinner';
+import Spinner from './components/Spinner';
 
 // Constants
 const ITEMS_PER_PAGE = 6;

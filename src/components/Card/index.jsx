@@ -1,6 +1,6 @@
-import Header from './Header/Header';
-import Body from './Body/Body';
-import Footer from './Footer/Footer';
+import Header from './Header';
+import Body from './Body';
+import Footer from './Footer';
 import { useEffect, useState } from 'react';
 import deleteIcon from '../../images/delete-icon.png';
 import editIcon from '../../images/edit-icon.png';
