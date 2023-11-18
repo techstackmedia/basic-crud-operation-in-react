@@ -1,30 +1,58 @@
 import { useEffect, useState } from 'react';
-import Card from './components/Card';
-import './App.css';
 import AddButton from './components/AddButton';
+import Card from './components/Card';
 import Search from './components/Search';
+import './App.css';
 import logo from './logo.svg';
 
+// Constants
 const ITEMS_PER_PAGE = 6;
 const BASE_URL = 'http://localhost:5000/cardData';
 
 export default function App() {
+  // Effect Hook for initial data fetch
   useEffect(() => {
     fetchAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
+  // State Hooks
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+  const [cardEdit, setCardEdit] = useState({
+    item: {},
+    isEditable: false,
+  });
+
+  // Toggle Edit Card function
+  const toggleEditCard = (item) => {
+    setCardEdit((prev) => {
+      return {
+        ...prev,
+        item,
+        isEditable: !prev.isEditable,
+      };
+    });
+
+    editCard(item.id, { body: item.body });
+  };
+
+  // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Derived pagination values
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const [error, setError] = useState(null);
   const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Timer function for clearing errors
   const clearErrorTimer = () => {
     setTimeout(() => {
       setError(null);
     }, 3000);
   };
+
+  // Fetch data function
   const fetchAllData = async () => {
     try {
       const response = await fetch(
@@ -47,28 +75,29 @@ export default function App() {
       clearErrorTimer();
     }
   };
-  const [cardEdit, setCardEdit] = useState({
-    item: {},
-    isEditable: false,
-  });
-  const toggleEditCard = (item) => {
-    setCardEdit((prev) => {
-      return {
-        ...prev,
-        item,
-        isEditable: !prev.isEditable,
-      };
-    });
 
-    editCard(item.id, { body: item.body });
-  };
+  // Pagination function
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Remove Card function
   const removeCard = async (id) => {
-    await fetch(`${BASE_URL}/${id}`, {
-      method: 'DELETE',
-    });
-    setData(data.filter((item) => item.id !== id));
+    try {
+      const response = await fetch(`${BASE_URL}/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error deleting card with ID ${id}`);
+      }
+      const dataRemove = data.filter((item) => item.id !== id)
+      setData(dataRemove);
+    } catch (e) {
+      setError(e.message);
+      clearErrorTimer();
+    }
   };
+
+  // Add Card function
   const addCard = async (newData) => {
     try {
       const response = await fetch(BASE_URL, {
@@ -89,6 +118,8 @@ export default function App() {
       clearErrorTimer();
     }
   };
+
+  // Edit Card function
   const editCard = async (id, updateItem) => {
     try {
       const response = await fetch(`${BASE_URL}/${id}`, {
@@ -109,10 +140,12 @@ export default function App() {
         );
       }
     } catch (e) {
-      setError(e.messaage);
+      setError(e.message);
       clearErrorTimer();
     }
   };
+
+  // Search function
   const handleSearch = async (searchTerm) => {
     try {
       if (searchTerm.trim() === '') {
