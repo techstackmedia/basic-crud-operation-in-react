@@ -10,6 +10,11 @@ const ITEMS_PER_PAGE = 6;
 const BASE_URL = 'http://localhost:5000/cardData';
 
 export default function App() {
+  useEffect(() => {
+    fetchAllData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
   const [originalData, setOriginalData] = useState(cardData);
   const [data, setData] = useState(originalData);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,26 +22,22 @@ export default function App() {
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const [error, setError] = useState(null);
   const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
-
-  useEffect(() => {
-    fetchAllData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const clearErrorTimer = () => {
     setTimeout(() => {
       setError(null);
     }, 3000);
   };
-
   const fetchAllData = async () => {
     try {
-      const response = await fetch(`${BASE_URL}?_page=${currentPage}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${BASE_URL}?_page=${currentPage}&_limit=100`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error('Error In Getting Data');
       } else {
@@ -63,7 +64,6 @@ export default function App() {
 
     editCard(item.id, { body: item.body });
   };
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const removeCard = async (id) => {
     await fetch(`${BASE_URL}/${id}`, {
