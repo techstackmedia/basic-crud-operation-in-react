@@ -1,11 +1,18 @@
 .App {
   font-family: Arial, Helvetica, sans-serif;
   min-height: 406px;
+  position: relative;
+}
+
+.App-header,
+.App-main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .App-header {
-  display: flex;
-  justify-content: space-between;
   flex-direction: row-reverse;
   padding: 10px 8px;
   background-color: #252525;
@@ -17,25 +24,24 @@
 }
 
 .App-main {
+  align-items: center;
+  margin: auto;
+}
+
+.App-pagination,
+.App-pagination button,
+.App-para,
+.App-error {
   display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    margin: auto;
+  justify-content: center;
 }
 
 .App-pagination {
-  display: flex;
-  justify-content: center;
   gap: 4px;
   margin-block: 20px;
-
 }
 
 .App-pagination button {
-  display: flex;
-  justify-content: center;
   align-items: center;
   width: 30px;
   height: 30px;
@@ -47,26 +53,29 @@
   border-radius: 4px;
 }
 
-.App-para,
+.App-log {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.App-log .App-empty,
 .App-error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 10px;
   border-radius: 4px;
   margin: auto;
+  color: #fff;
 }
 
-.App-para {
-  background-color: #252525;
-  color: #fff;
-  border: 1px solid #252525;
+.App-log .App-empty {
+  background-color: #262626e6;
+  border: 1px solid #262626e6;
 }
 
-.App-error {
-  background-color: #d11111;
-  color: #fff;
-  border: 1px solid #d11111;
+.App-log .App-error {
+  background-color: #d11212e6;
+  border: 1px solid #d11212e6;
 }
 
 @media (max-width: 266px) {

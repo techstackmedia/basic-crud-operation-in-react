@@ -23,15 +23,23 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const clearErrorTimer = () => {
+    setTimeout(() => {
+      setError(null);
+    }, 3000)
+  }
 
   const fetchAllData = async () => {
     try {
-      const response = await fetch(`${BASE_URL}?_page=${currentPage}&_limit=${ITEMS_PER_PAGE}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${BASE_URL}?_page=${currentPage}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error('Error in getting data');
       } else {
@@ -40,6 +48,7 @@ export default function App() {
       }
     } catch (e) {
       setError(e.message);
+      clearErrorTimer()
     }
   };
   const [cardEdit, setCardEdit] = useState({
@@ -75,7 +84,7 @@ export default function App() {
         body: JSON.stringify(newData),
       });
       if (!response.ok) {
-        throw new Error('Can add Card');
+        throw new Error("Can't add Card");
       } else {
         const dataAdd = await response.json();
         setOriginalData((prevData) => [...prevData, dataAdd]);
@@ -83,6 +92,7 @@ export default function App() {
       }
     } catch (e) {
       setError(e.message);
+      clearErrorTimer()
     }
   };
   const editCard = async (id, updateItem) => {
@@ -129,6 +139,7 @@ export default function App() {
       }
     } catch (e) {
       setError(e.message);
+      clearErrorTimer()
     }
   };
 
@@ -156,14 +167,18 @@ export default function App() {
               );
             })
           ) : (
-            <p className='App-para'>
-              <span>No More Card</span>
-            </p>
+            <div className='App-log'>
+              <p className='App-empty'>
+                <span>No More Card</span>
+              </p>
+            </div>
           )}
           {error ? (
-            <p className='App-error'>
-              <span>{error}</span>
-            </p>
+            <div className='App-log'>
+              <p className='App-error'>
+                <span>{error}</span>
+              </p>
+            </div>
           ) : null}
         </main>
       </div>
