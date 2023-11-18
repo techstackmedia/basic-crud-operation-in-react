@@ -14,36 +14,6 @@
       "id": 3,
       "body": "This is body 3",
       "footer": "#3"
-    },
-    {
-      "id": 4,
-      "body": "This is body 4",
-      "footer": "#4"
-    },
-    {
-      "id": 5,
-      "body": "Monica",
-      "footer": "#5"
-    },
-    {
-      "id": 6,
-      "body": "This is body 6",
-      "footer": "#6"
-    },
-    {
-      "id": 7,
-      "body": "This is body 7",
-      "footer": "#7"
-    },
-    {
-      "id": 8,
-      "body": "This is body 8",
-      "footer": "#8"
-    },
-    {
-      "id": 9,
-      "body": "This is body 9",
-      "footer": "#9"
     }
   ]
 }
