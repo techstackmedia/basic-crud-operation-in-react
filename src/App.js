@@ -4,6 +4,7 @@ import Card from './components/Card';
 import Search from './components/Search';
 import './App.css';
 import logo from './logo.svg';
+import Spinner from './components/Spinner/Spinner';
 
 // Constants
 const ITEMS_PER_PAGE = 6;
@@ -19,6 +20,7 @@ export default function App() {
   // State Hooks
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, seIsLoading] = useState(false);
   const [cardEdit, setCardEdit] = useState({
     item: {},
     isEditable: false,
@@ -68,6 +70,7 @@ export default function App() {
         throw new Error('Error fetching data. Could not retrieve data');
       } else {
         const dataList = await response.json();
+        seIsLoading(true);
         setData(dataList);
       }
     } catch (e) {
@@ -181,36 +184,40 @@ export default function App() {
           <img src={logo} width={30} height={30} alt='techstack media logo' />
           <Search handleSearch={handleSearch} />
         </header>
-        <main className='App-main'>
-          {currentItems.length !== 0 ? (
-            currentItems.map((item) => {
-              return (
-                <Card
-                  key={item.id}
-                  id={item.id}
-                  item={item}
-                  removeCard={removeCard}
-                  editCard={editCard}
-                  cardEdit={cardEdit}
-                  editCardHandler={toggleEditCard}
-                />
-              );
-            })
-          ) : (
-            <div className='App-log'>
-              <p className='App-empty'>
-                <span>No More Cards</span>
-              </p>
-            </div>
-          )}
-          {error ? (
-            <div className='App-log'>
-              <p className='App-error'>
-                <span>{error}</span>
-              </p>
-            </div>
-          ) : null}
-        </main>
+        {!isLoading ? (
+          <Spinner />
+        ) : (
+          <main className='App-main'>
+            {currentItems.length !== 0 ? (
+              currentItems.map((item) => {
+                return (
+                  <Card
+                    key={item.id}
+                    id={item.id}
+                    item={item}
+                    removeCard={removeCard}
+                    editCard={editCard}
+                    cardEdit={cardEdit}
+                    editCardHandler={toggleEditCard}
+                  />
+                );
+              })
+            ) : (
+              <div className='App-log'>
+                <p className='App-empty'>
+                  <span>No More Cards</span>
+                </p>
+              </div>
+            )}
+            {error ? (
+              <div className='App-log'>
+                <p className='App-error'>
+                  <span>{error}</span>
+                </p>
+              </div>
+            ) : null}
+          </main>
+        )}
       </div>
       <div className='App-pagination'>
         {[...Array(Math.ceil(data.length / ITEMS_PER_PAGE))].map((_, index) => (
