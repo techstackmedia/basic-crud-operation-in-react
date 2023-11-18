@@ -26,29 +26,26 @@ export default function App() {
   const clearErrorTimer = () => {
     setTimeout(() => {
       setError(null);
-    }, 3000)
-  }
+    }, 3000);
+  };
 
   const fetchAllData = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}?_page=${currentPage}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await fetch(`${BASE_URL}?_page=${currentPage}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
-        throw new Error('Error in getting data');
+        throw new Error('Error In Getting Data');
       } else {
         const dataList = await response.json();
         setData(dataList);
       }
     } catch (e) {
       setError(e.message);
-      clearErrorTimer()
+      clearErrorTimer();
     }
   };
   const [cardEdit, setCardEdit] = useState({
@@ -84,7 +81,7 @@ export default function App() {
         body: JSON.stringify(newData),
       });
       if (!response.ok) {
-        throw new Error("Can't add Card");
+        throw new Error("Can't Add Card");
       } else {
         const dataAdd = await response.json();
         setOriginalData((prevData) => [...prevData, dataAdd]);
@@ -92,7 +89,7 @@ export default function App() {
       }
     } catch (e) {
       setError(e.message);
-      clearErrorTimer()
+      clearErrorTimer();
     }
   };
   const editCard = async (id, updateItem) => {
@@ -105,7 +102,7 @@ export default function App() {
         body: JSON.stringify(updateItem),
       });
       if (!response.ok) {
-        throw new Error('Can not Edit Card');
+        throw new Error('Can Not Edit Card');
       } else {
         const dataEdit = await response.json();
         setData((prevData) =>
@@ -116,6 +113,7 @@ export default function App() {
       }
     } catch (e) {
       setError(e.messaage);
+      clearErrorTimer();
     }
   };
   const handleSearch = async (searchTerm) => {
@@ -131,7 +129,7 @@ export default function App() {
         });
 
         if (!response.ok) {
-          throw new Error('Error searching cards');
+          throw new Error('Error Searching Cards');
         } else {
           const filteredCards = await response.json();
           setData(filteredCards);
@@ -139,7 +137,7 @@ export default function App() {
       }
     } catch (e) {
       setError(e.message);
-      clearErrorTimer()
+      clearErrorTimer();
     }
   };
 
