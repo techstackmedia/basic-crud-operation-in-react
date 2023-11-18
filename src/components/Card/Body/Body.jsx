@@ -4,13 +4,13 @@ import bodyModule from './Body.module.css';
 const Body = ({
   children,
   editIcon,
-  editCartHandler,
+  editCardHandler,
   item,
 }) => {
   return (
     <section className={bodyModule.body}>
       <EditButton
-        editCartHandler={editCartHandler}
+        editCardHandler={editCardHandler}
         item={item}
       >
         <img src={editIcon} width={16} height={16} alt='edit icon' />

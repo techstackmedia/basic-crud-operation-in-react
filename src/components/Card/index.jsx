@@ -10,7 +10,7 @@ const Card = ({
   removeCard,
   id,
   editCard,
-  editCartHandler,
+  editCardHandler,
   cardEdit,
 }) => {
   const [postContent, setPostContent] = useState(item.body ?? '');
@@ -26,7 +26,7 @@ const Card = ({
   };
 
   const handleSaveClick = () => {
-    editCartHandler({ ...item, body: postContent });
+    editCardHandler({ ...item, body: postContent });
   };
 
   return (
@@ -40,7 +40,7 @@ const Card = ({
       />
       <Body
         editCard={editCard}
-        editCartHandler={editCartHandler}
+        editCardHandler={editCardHandler}
         item={item}
         editIcon={
           editIcon ??

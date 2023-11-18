@@ -53,7 +53,7 @@ export default function App() {
     item: {},
     isEditable: false,
   });
-  const editCartHandler = (item) => {
+  const toggleEditCard = (item) => {
     setCardEdit((prev) => {
       return {
         ...prev,
@@ -160,7 +160,7 @@ export default function App() {
                   removeCard={removeCard}
                   editCard={editCard}
                   cardEdit={cardEdit}
-                  editCartHandler={editCartHandler}
+                  editCardHandler={toggleEditCard}
                 />
               );
             })
