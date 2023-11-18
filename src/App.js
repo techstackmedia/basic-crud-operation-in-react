@@ -26,7 +26,7 @@ export default function App() {
 
   const fetchAllData = async () => {
     try {
-      const response = await fetch(`${BASE_URL}?_page=${currentItems}`, {
+      const response = await fetch(`${BASE_URL}?_page=${currentPage}&_limit=${ITEMS_PER_PAGE}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function App() {
         setData(dataList);
       }
     } catch (e) {
-      setError(error);
+      setError(e.message);
     }
   };
   const [cardEdit, setCardEdit] = useState({
@@ -82,7 +82,7 @@ export default function App() {
         setData((prevData) => [...prevData, dataAdd]);
       }
     } catch (e) {
-      setError(e);
+      setError(e.message);
     }
   };
   const editCard = async (id, updateItem) => {
@@ -105,7 +105,7 @@ export default function App() {
         );
       }
     } catch (e) {
-      setError(e);
+      setError(e.messaage);
     }
   };
   const handleSearch = async (searchTerm) => {
@@ -128,7 +128,7 @@ export default function App() {
         }
       }
     } catch (e) {
-      setError(e);
+      setError(e.message);
     }
   };
 
