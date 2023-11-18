@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from './components/Card';
 import './App.css';
-import cardData from './data';
 import AddButton from './components/AddButton';
 import Search from './components/Search';
 import logo from './logo.svg';
@@ -15,8 +14,7 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
-  const [originalData, setOriginalData] = useState(cardData);
-  const [data, setData] = useState(originalData);
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
@@ -84,7 +82,6 @@ export default function App() {
         throw new Error("Can't Add Card");
       } else {
         const dataAdd = await response.json();
-        setOriginalData((prevData) => [...prevData, dataAdd]);
         setData((prevData) => [...prevData, dataAdd]);
       }
     } catch (e) {
