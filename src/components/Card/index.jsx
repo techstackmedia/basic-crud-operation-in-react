@@ -12,6 +12,7 @@ const Card = ({
   editCard,
   editCardHandler,
   cardEdit,
+  showToast
 }) => {
   const [postContent, setPostContent] = useState(item.body ?? '');
 
@@ -27,6 +28,7 @@ const Card = ({
 
   const handleSaveClick = () => {
     editCardHandler({ ...item, body: postContent });
+    showToast('Card edited successfully!')
   };
 
   return (

@@ -82,6 +82,19 @@ export default function App() {
   // Pagination function
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Toast State
+  const [toastMessage, setToastMessage] = useState('');
+
+  // Toast function
+  const showToast = (message) => {
+    setToastMessage(message);
+
+    // Hide the toast after a certain duration
+    setTimeout(() => {
+      setToastMessage('');
+    }, 3000);
+  };
+
   // Remove Card function
   const removeCard = async (id) => {
     try {
@@ -94,6 +107,7 @@ export default function App() {
       }
       const dataRemove = data.filter((item) => item.id !== id);
       setData(dataRemove);
+      showToast('Card deleted successfully!');
     } catch (e) {
       setError(e.message);
       clearErrorTimer();
@@ -110,11 +124,13 @@ export default function App() {
         },
         body: JSON.stringify(newData),
       });
+
       if (!response.ok) {
         throw new Error('Error adding card. Could not add the card');
       } else {
         const dataAdd = await response.json();
         setData((prevData) => [...prevData, dataAdd]);
+        showToast('Card added successfully!');
       }
     } catch (e) {
       setError(e.message);
@@ -132,6 +148,7 @@ export default function App() {
         },
         body: JSON.stringify(updateItem),
       });
+
       if (!response.ok) {
         throw new Error('Error editing card. Could not edit the card');
       } else {
@@ -199,6 +216,7 @@ export default function App() {
                     editCard={editCard}
                     cardEdit={cardEdit}
                     editCardHandler={toggleEditCard}
+                    showToast={showToast}
                   />
                 );
               })
@@ -225,6 +243,12 @@ export default function App() {
             {index + 1}
           </button>
         ))}
+
+        {toastMessage && (
+          <div className={`toast ${toastMessage && 'show'}`}>
+            <p>{toastMessage}</p>
+          </div>
+        )}
       </div>
     </>
   );
