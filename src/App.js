@@ -11,12 +11,6 @@ const ITEMS_PER_PAGE = 6;
 const BASE_URL = 'http://localhost:5000/cardsData';
 
 export default function App() {
-  // Effect Hook for initial data fetch
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // State Hooks
   const [cardsData, setCardsData] = useState([]);
   const [error, setError] = useState(null);
@@ -61,33 +55,36 @@ export default function App() {
   };
 
   // Fetch data function
-  const fetchData = async () => {
+  const fetchData = async (forceFetch = false) => {
+    setIsLoading(false)
     try {
-      const response = await fetch(BASE_URL,
-        {
+      // Check if data fetching is needed (either forced or not loaded)
+      if (forceFetch || !isLoading) {
+        const response = await fetch(BASE_URL, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching data. Could not retrieve data');
+        } else {
+          const fetchedData = await response.json();
+          setCardsData(fetchedData);
         }
-      );
-      if (!response.ok) {
-        throw new Error('Error fetching data. Could not retrieve data');
-      } else {
-        const fetchedData = await response.json();
-        setIsLoading(true);
-        setCardsData(fetchedData);
       }
     } catch (e) {
       setError(e.message);
-      clearErrorTimer();
+    } finally {
+      setIsLoading(true)
     }
   };
 
   // Pagination function
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
-    fetchData();
+    fetchData(isLoading);
   };
 
   // Toast State
