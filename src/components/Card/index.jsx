@@ -23,7 +23,7 @@ const Card = ({
       setPostContent(cardEdit.card.body);
       showToast('Card body editing mode!');
     }
-  }, [cardEdit]);
+  }, [cardEdit, id, showToast, setPostContent]);
 
   const handleTextareaChange = (e) => {
     setPostContent(e.target.value);

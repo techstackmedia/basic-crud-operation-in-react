@@ -47,6 +47,12 @@ export default function App() {
   const indexOfFirstCard = indexOfLastCard - ITEMS_PER_PAGE;
   const currentCards = cardsData?.slice(indexOfFirstCard, indexOfLastCard);
 
+  // Effect Hook for initial data fetch
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
   // Timer function for clearing errors
   const clearErrorTimer = () => {
     setTimeout(() => {
@@ -57,8 +63,7 @@ export default function App() {
   // Fetch data function
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}?_page=${currentPage}&_limit=100`,
+      const response = await fetch(BASE_URL,
         {
           method: 'GET',
           headers: {
@@ -80,7 +85,10 @@ export default function App() {
   };
 
   // Pagination function
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    fetchData();
+  };
 
   // Toast State
   const [toastMessage, setToastMessage] = useState(null);
@@ -105,10 +113,19 @@ export default function App() {
       if (!response.ok) {
         throw new Error('Error deleting card. Could not delete the card');
       }
+
+      // Wait for fetchData to complete before updating the state
+      // fetchData();
+
       const updatedCardsData = cardsData.filter((card) => card.id !== id);
       setCardsData(updatedCardsData);
       showToast('Card deleted successfully!');
-      fetchData()
+
+      // Check if the current page is empty and there's a previous page
+      if (currentCards.length === 0 && currentPage > 1) {
+        // Move to the previous page
+        setCurrentPage(currentPage - 1);
+      }
     } catch (e) {
       setError(e.message);
       clearErrorTimer();
@@ -129,10 +146,12 @@ export default function App() {
       if (!response.ok) {
         throw new Error('Error adding card. Could not add the card');
       } else {
+        // Wait for fetchData to complete before updating the state
+        // fetchData()
+
         const addedCard = await response.json();
         setCardsData((prevData) => [...prevData, addedCard]);
         showToast('Card added successfully!');
-        fetchData()
       }
     } catch (e) {
       setError(e.message);
@@ -154,11 +173,13 @@ export default function App() {
       if (!response.ok) {
         throw new Error('Error editing card. Could not edit the card');
       } else {
+        // Wait for fetchData to complete before updating the state
+        //fetchData()
+
         const editedCard = await response.json();
         setCardsData((prevData) =>
           prevData.map((card) => (card.id === id ? { ...card, editedCard } : card))
         );
-        fetchData()
       }
     } catch (e) {
       setError(e.message);
@@ -182,9 +203,11 @@ export default function App() {
         if (!response.ok) {
           throw new Error('Error searching cards. Could not perform the search');
         } else {
+          // Wait for fetchData to complete before updating the state
+          // fetchData()
+
           const filteredCards = await response.json();
           setCardsData(filteredCards);
-          fetchData()
         }
       }
     } catch (e) {
