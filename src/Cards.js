@@ -34,14 +34,15 @@ export default function Cards() {
     editCard(card.id, { body: card.body });
   };
 
+  // Extracting the 'page' query parameter from the current URL
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const currentPage = queryParams.get('page') || 1;
 
   const navigate = useNavigate()
 
-  const handleClick = (link) => {
-    navigate(link)
+  const handleClick = (page) => {
+    navigate(page)
   }
 
   // Derived pagination values
