@@ -23,7 +23,8 @@ const Card = ({
       setPostContent(cardEdit.card.body);
       showToast('Card body editing mode!');
     }
-  }, [cardEdit, id, showToast, setPostContent]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardEdit]);
 
   const handleTextareaChange = (e) => {
     setPostContent(e.target.value);
