@@ -16,11 +16,14 @@ const Card = ({
 }) => {
   const [postContent, setPostContent] = useState(item.body ?? '');
 
+  // Optionally Manage Side Effect Hook
+  // UseEffect to synchronize post content with the edited card's body when editing is active
   useEffect(() => {
-    if (cardEdit.isEditable === true && cardEdit.item.id === id) {
-      setPostContent(cardEdit.item.body);
+    if (cardEdit.isEditing === true && cardEdit.card.id === id) {
+      setPostContent(cardEdit.card.body);
+      showToast('Card body editing mode!');
     }
-  }, [cardEdit, id, setPostContent]);
+  }, [cardEdit]);
 
   const handleTextareaChange = (e) => {
     setPostContent(e.target.value);
@@ -49,7 +52,7 @@ const Card = ({
           'https://img.icons8.com/material-rounded/24/create-new.png'
         }
       >
-        {cardEdit.isEditable === true && cardEdit.item.id === id ? (
+        {cardEdit.isEditing === true && cardEdit.card.id === id ? (
           <>
             <textarea value={postContent} onChange={handleTextareaChange} />
             <button className='saveButton' onClick={handleSaveClick}>

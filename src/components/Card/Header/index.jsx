@@ -1,5 +1,6 @@
 import RemoveButton from '../../shared/RemoveButton.jsx/index.jsx';
 import HeaderModule from './index.module.css';
+
 const Header = ({ removeCard, id, deleteIcon }) => {
   return (
     <header className={HeaderModule.header}>

@@ -8,44 +8,44 @@ import Spinner from './components/Spinner';
 
 // Constants
 const ITEMS_PER_PAGE = 6;
-const BASE_URL = 'http://localhost:5000/cardData';
+const BASE_URL = 'http://localhost:5000/cardsData';
 
 export default function App() {
   // Effect Hook for initial data fetch
   useEffect(() => {
-    fetchAllData();
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // State Hooks
-  const [data, setData] = useState([]);
+  const [cardsData, setCardsData] = useState([]);
   const [error, setError] = useState(null);
-  const [isLoading, seIsLoading] = useState(false);
-  const [cardEdit, setCardEdit] = useState({
-    item: {},
-    isEditable: false,
+  const [isLoading, setIsLoading] = useState(false);
+  const [editingCard, setEditingCard] = useState({
+    card: {},
+    isEditing: false,
   });
 
   // Toggle Edit Card function
-  const toggleEditCard = (item) => {
-    setCardEdit((prev) => {
+  const toggleEditCard = (card) => {
+    setEditingCard((prev) => {
       return {
         ...prev,
-        item,
-        isEditable: !prev.isEditable,
+        card,
+        isEditing: !prev.isEditing,
       };
     });
 
-    editCard(item.id, { body: item.body });
+    editCard(card.id, { body: card.body });
   };
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
 
   // Derived pagination values
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastCard = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstCard = indexOfLastCard - ITEMS_PER_PAGE;
+  const currentCards = cardsData?.slice(indexOfFirstCard, indexOfLastCard);
 
   // Timer function for clearing errors
   const clearErrorTimer = () => {
@@ -55,7 +55,7 @@ export default function App() {
   };
 
   // Fetch data function
-  const fetchAllData = async () => {
+  const fetchData = async () => {
     try {
       const response = await fetch(
         `${BASE_URL}?_page=${currentPage}&_limit=100`,
@@ -69,9 +69,9 @@ export default function App() {
       if (!response.ok) {
         throw new Error('Error fetching data. Could not retrieve data');
       } else {
-        const dataList = await response.json();
-        seIsLoading(true);
-        setData(dataList);
+        const fetchedData = await response.json();
+        setIsLoading(true);
+        setCardsData(fetchedData);
       }
     } catch (e) {
       setError(e.message);
@@ -83,7 +83,7 @@ export default function App() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Toast State
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState(null);
 
   // Toast function
   const showToast = (message) => {
@@ -91,7 +91,7 @@ export default function App() {
 
     // Hide the toast after a certain duration
     setTimeout(() => {
-      setToastMessage('');
+      setToastMessage(null);
     }, 3000);
   };
 
@@ -105,9 +105,10 @@ export default function App() {
       if (!response.ok) {
         throw new Error('Error deleting card. Could not delete the card');
       }
-      const dataRemove = data.filter((item) => item.id !== id);
-      setData(dataRemove);
+      const updatedCardsData = cardsData.filter((card) => card.id !== id);
+      setCardsData(updatedCardsData);
       showToast('Card deleted successfully!');
+      fetchData()
     } catch (e) {
       setError(e.message);
       clearErrorTimer();
@@ -115,22 +116,23 @@ export default function App() {
   };
 
   // Add Card function
-  const addCard = async (newData) => {
+  const addCard = async (newCard) => {
     try {
       const response = await fetch(BASE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newData),
+        body: JSON.stringify(newCard),
       });
 
       if (!response.ok) {
         throw new Error('Error adding card. Could not add the card');
       } else {
-        const dataAdd = await response.json();
-        setData((prevData) => [...prevData, dataAdd]);
+        const addedCard = await response.json();
+        setCardsData((prevData) => [...prevData, addedCard]);
         showToast('Card added successfully!');
+        fetchData()
       }
     } catch (e) {
       setError(e.message);
@@ -139,25 +141,24 @@ export default function App() {
   };
 
   // Edit Card function
-  const editCard = async (id, updateItem) => {
+  const editCard = async (id, updatedCard) => {
     try {
       const response = await fetch(`${BASE_URL}/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updateItem),
+        body: JSON.stringify(updatedCard),
       });
 
       if (!response.ok) {
         throw new Error('Error editing card. Could not edit the card');
       } else {
-        const dataEdit = await response.json();
-        setData((prevData) =>
-          prevData.map((item) =>
-            item.id === id ? { ...item, dataEdit } : item
-          )
+        const editedCard = await response.json();
+        setCardsData((prevData) =>
+          prevData.map((card) => (card.id === id ? { ...card, editedCard } : card))
         );
+        fetchData()
       }
     } catch (e) {
       setError(e.message);
@@ -169,7 +170,7 @@ export default function App() {
   const handleSearch = async (searchTerm) => {
     try {
       if (searchTerm.trim() === '') {
-        fetchAllData();
+        fetchData();
       } else {
         const response = await fetch(`${BASE_URL}?body_like=${searchTerm}`, {
           method: 'GET',
@@ -179,12 +180,11 @@ export default function App() {
         });
 
         if (!response.ok) {
-          throw new Error(
-            'Error searching cards. Could not perform the search'
-          );
+          throw new Error('Error searching cards. Could not perform the search');
         } else {
           const filteredCards = await response.json();
-          setData(filteredCards);
+          setCardsData(filteredCards);
+          fetchData()
         }
       }
     } catch (e) {
@@ -197,29 +197,29 @@ export default function App() {
     <>
       <div className='App'>
         <header className='App-header'>
-          <AddButton addCard={addCard} data={data} />
-          <img src={logo} width={30} height={30} alt='techstack media logo' />
+          <AddButton addCard={addCard} data={cardsData} />
+          <a href="https://techstackmedia.com" target='_blank' rel='noreferrer'>
+            <img src={logo} width={30} height={30} alt='techstack media logo' />
+          </a>
           <Search handleSearch={handleSearch} />
         </header>
         {!isLoading ? (
           <Spinner />
         ) : (
           <main className='App-main'>
-            {currentItems.length !== 0 ? (
-              currentItems.map((item) => {
-                return (
-                  <Card
-                    key={item.id}
-                    id={item.id}
-                    item={item}
-                    removeCard={removeCard}
-                    editCard={editCard}
-                    cardEdit={cardEdit}
-                    editCardHandler={toggleEditCard}
-                    showToast={showToast}
-                  />
-                );
-              })
+            {currentCards.length !== 0 ? (
+              currentCards.map((card) => (
+                <Card
+                  key={card.id}
+                  id={card.id}
+                  item={card}
+                  removeCard={removeCard}
+                  editCard={editCard}
+                  cardEdit={editingCard}
+                  editCardHandler={toggleEditCard}
+                  showToast={showToast}
+                />
+              ))
             ) : (
               <div className='App-log'>
                 <p className='App-empty'>
@@ -238,7 +238,7 @@ export default function App() {
         )}
       </div>
       <div className='App-pagination'>
-        {[...Array(Math.ceil(data.length / ITEMS_PER_PAGE))].map((_, index) => (
+        {[...Array(Math.ceil(cardsData.length / ITEMS_PER_PAGE))].map((_, index) => (
           <button key={index} onClick={() => paginate(index + 1)}>
             {index + 1}
           </button>
