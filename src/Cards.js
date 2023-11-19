@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import AddButton from './components/AddButton';
-import Card from './components/Card';
+import CardList from './components/Card';
 import Search from './components/Search';
 import './App.css';
 import logo from './logo.svg';
@@ -225,7 +225,7 @@ export default function Cards() {
           <main className='App-main'>
             {currentCards.length !== 0 ? (
               currentCards.map((card) => (
-                <Card
+                <CardList
                   key={card.id}
                   id={card.id}
                   item={card}
