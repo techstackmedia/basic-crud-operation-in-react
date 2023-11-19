@@ -155,7 +155,7 @@ export default function App() {
         const dataEdit = await response.json();
         setData((prevData) =>
           prevData.map((item) =>
-            item.id === id ? { ...item, ...dataEdit } : item
+            item.id === id ? { ...item, dataEdit } : item
           )
         );
       }
