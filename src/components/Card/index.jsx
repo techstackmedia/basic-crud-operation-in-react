@@ -9,7 +9,6 @@ const Card = ({
   item,
   removeCard,
   id,
-  editCard,
   editCardHandler,
   cardEdit,
   showToast
@@ -45,7 +44,6 @@ const Card = ({
         }
       />
       <Body
-        editCard={editCard}
         editCardHandler={editCardHandler}
         item={item}
         editIcon={
