@@ -171,7 +171,7 @@ export default function Cards() {
 
         const editedCard = await response.json();
         setCardsData((prevData) =>
-          prevData.map((card) => (card.id === id ? { ...card, editedCard } : card))
+          prevData.map((card) => (card.id === id ? { ...card, ...editedCard } : card))
         );
       }
     } catch (e) {
