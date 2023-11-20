@@ -168,11 +168,11 @@ export default function Cards() {
         throw new Error('Error editing card. Could not edit the card');
       } else {
         // Wait for fetchData to complete before updating the state
-        //fetchData()
+        fetchData()
 
         const editedCard = await response.json();
         setCardsData((prevData) =>
-          prevData.map((card) => (card.id === id ? { ...card, editedCard } : card))
+          prevData.map((card) => (card.id === id ? { ...card, ...editedCard } : card))
         );
       }
     } catch (e) {
