@@ -9,7 +9,6 @@ const Card = ({
   item,
   removeCard,
   id,
-  editCard,
   editCardHandler,
   cardEdit,
   showToast

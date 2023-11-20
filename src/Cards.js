@@ -230,7 +230,6 @@ export default function Cards() {
                   id={card.id}
                   item={card}
                   removeCard={removeCard}
-                  editCard={editCard}
                   cardEdit={editingCard}
                   editCardHandler={toggleEditCard}
                   showToast={showToast}
