@@ -1,6 +1,6 @@
-const EditButton = ({ children, id, editCard }) => {
+const EditButton = ({ children, item, editCardHandler }) => {
   const handleClick = () => {
-    editCard(id);
+    editCardHandler(item);
   };
 
   return <button onClick={handleClick}>{children}</button>;

@@ -1,10 +1,10 @@
 import EditButton from '../../shared/EditButton';
 import bodyModule from './Body.module.css';
 
-const Body = ({ children, editCard, id, editIcon }) => {
+const Body = ({ children, editCard, id, editIcon, item, editCardHandler }) => {
   return (
     <section className={bodyModule.body}>
-      <EditButton id={id} editCard={editCard}>
+      <EditButton id={id} editCard={editCard} item={item} editCardHandler={editCardHandler}>
         <img src={editIcon} width={16} height={16} alt='edit icon' />
       </EditButton>
       <p>{children}</p>
