@@ -2,7 +2,7 @@
   "cardsData": [
     {
       "id": 1,
-      "body": "jaj",
+      "body": "This is body 1",
       "footer": "#1"
     },
     {
@@ -14,46 +14,6 @@
       "id": 3,
       "body": "This is body 3",
       "footer": "#3"
-    },
-    {
-      "id": 6,
-      "body": "This is body 6xcx",
-      "footer": "#6"
-    },
-    {
-      "id": 7,
-      "body": "This is body 7",
-      "footer": "#7"
-    },
-    {
-      "id": 8,
-      "body": "This is body 8",
-      "footer": "#8"
-    },
-    {
-      "id": 9,
-      "body": "This is body 9",
-      "footer": "#9"
-    },
-    {
-      "id": 10,
-      "body": "This is body 10",
-      "footer": "#10"
-    },
-    {
-      "id": 11,
-      "body": "This is body 11",
-      "footer": "#11"
-    },
-    {
-      "id": 12,
-      "body": "This is body 12",
-      "footer": "#12"
-    },
-    {
-      "id": 13,
-      "body": "This is body 13",
-      "footer": "#13"
     }
   ]
 }
