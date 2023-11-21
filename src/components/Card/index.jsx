@@ -18,7 +18,7 @@ const Card = ({
   // Optionally Manage Side Effect Hook
   // UseEffect to synchronize post content with the edited card's body when editing is active
   useEffect(() => {
-    if (cardEdit.isEditing === true && cardEdit.card.id === id) {
+    if (cardEdit.isEditing === true) {
       setPostContent(cardEdit.card.body);
       showToast('Card body editing mode!');
     }
