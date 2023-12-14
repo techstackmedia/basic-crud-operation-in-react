@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useRef, useState } from 'react';
 import useToast from '../hooks/useToast';
 import useCardEdit from '../hooks/useCardEdit';
 
@@ -11,6 +11,7 @@ const CardContextProvider = ({ children }) => {
   const [cardsData, setCardsData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(isLoading);
 
   const clearErrorTimer = () => {
     setTimeout(() => {
@@ -21,7 +22,7 @@ const CardContextProvider = ({ children }) => {
   const fetchData = async (forceFetch = true) => {
     setIsLoading(true);
     try {
-      if (forceFetch || !isLoading) {
+      if (forceFetch || !isLoadingRef.current) {
         const response = await fetch(BASE_URL, {
           method: 'GET',
           headers: {
