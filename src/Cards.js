@@ -86,7 +86,7 @@ export default function Cards() {
     } catch (e) {
       setError(e.message);
       setTimeout(() => {
-        setError('')
+        setError(null)
       }, 3000)
     } finally {
       setIsLoading(false)
