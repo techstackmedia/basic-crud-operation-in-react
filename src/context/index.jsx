@@ -2,7 +2,7 @@ import { createContext, useRef, useState } from 'react';
 import useToast from '../hooks/useToast';
 import useCardEdit from '../hooks/useCardEdit';
 
-const CreateCardContext = createContext();
+const CardContext = createContext();
 
 const ITEMS_PER_PAGE = 6;
 const BASE_URL = `${process.env.REACT_APP_BASE_URL}/cardsData`;
@@ -149,7 +149,7 @@ const CardContextProvider = ({ children }) => {
   };
 
   return (
-    <CreateCardContext.Provider
+    <CardContext.Provider
       value={{
         error,
         editingCard,
@@ -166,9 +166,9 @@ const CardContextProvider = ({ children }) => {
       }}
     >
       {children}
-    </CreateCardContext.Provider>
+    </CardContext.Provider>
   );
 };
 
 export { CardContextProvider };
-export default CreateCardContext;
+export default CardContext;

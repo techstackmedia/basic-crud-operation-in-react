@@ -4,7 +4,7 @@ import Search from './components/Search';
 import './App.css';
 import logo from './logo.svg';
 import Spinner from './components/Spinner';
-import CreateCardContext from './context';
+import CardContext from './context';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 
@@ -22,7 +22,7 @@ export default function Cards() {
     showToast,
     ITEMS_PER_PAGE,
     fetchData,
-  } = useContext(CreateCardContext);
+  } = useContext(CardContext);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
