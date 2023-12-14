@@ -65,7 +65,7 @@ export default function Cards() {
 
   // Fetch data function
   const fetchData = async (forceFetch = false) => {
-    setIsLoading(false)
+    setIsLoading(true)
     try {
       // Check if data fetching is needed (either forced or not loaded)
       if (forceFetch || !isLoading) {
@@ -86,7 +86,7 @@ export default function Cards() {
     } catch (e) {
       setError(e.message);
     } finally {
-      setIsLoading(true)
+      setIsLoading(false)
     }
   };
 
@@ -220,7 +220,7 @@ export default function Cards() {
           </a>
           <Search handleSearch={handleSearch} />
         </header>
-        {!isLoading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <main className='App-main'>
