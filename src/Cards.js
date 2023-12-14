@@ -64,7 +64,7 @@ export default function Cards() {
   };
 
   // Fetch data function
-  const fetchData = async (forceFetch = false) => {
+  const fetchData = async (forceFetch = true) => {
     setIsLoading(true)
     try {
       // Check if data fetching is needed (either forced or not loaded)
@@ -85,6 +85,9 @@ export default function Cards() {
       }
     } catch (e) {
       setError(e.message);
+      setTimeout(() => {
+        setError('')
+      }, 3000)
     } finally {
       setIsLoading(false)
     }

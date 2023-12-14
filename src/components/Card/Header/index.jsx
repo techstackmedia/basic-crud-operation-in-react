@@ -1,4 +1,4 @@
-import RemoveButton from '../../shared/RemoveButton.jsx/index.jsx';
+import RemoveButton from '../../shared/RemoveButton';
 import HeaderModule from './index.module.css';
 
 const Header = ({ removeCard, id, deleteIcon }) => {
