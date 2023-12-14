@@ -28,7 +28,6 @@ export default function Cards() {
   const queryParams = new URLSearchParams(location.search);
   const currentPage = queryParams.get('page') || 1;
 
-  // Derived pagination values
   const indexOfLastCard = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstCard = indexOfLastCard - ITEMS_PER_PAGE;
   const currentCards = cardsData?.slice(indexOfFirstCard, indexOfLastCard);
