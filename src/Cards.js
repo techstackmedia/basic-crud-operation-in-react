@@ -32,6 +32,8 @@ export default function Cards() {
     });
 
     editCard(card.id, { body: card.body });
+    // Do this instead of using useEffect in Body file
+    // showToast('Card body editing mode!');
   };
 
   // Extracting the 'page' query parameter from the current URL
