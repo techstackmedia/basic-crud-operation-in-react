@@ -32,7 +32,7 @@ export default function Cards() {
     });
 
     editCard(card.id, { body: card.body });
-    // Do this instead of using useEffect in Body file
+    // Do this instead of using useEffect in component Card file
     // showToast('Card body editing mode!');
   };
 
