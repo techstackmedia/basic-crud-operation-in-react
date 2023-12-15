@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-const CreateCardContext = createContext();
+const CardContext = createContext();
 
 const ITEMS_PER_PAGE = 6;
 const BASE_URL = `${process.env.REACT_APP_BASE_URL}/cardsData`;
@@ -25,6 +25,7 @@ const CardContextProvider = ({ children }) => {
     });
 
     editCard(card.id, { body: card.body });
+    showToast('Card body editing mode!');
   };
 
   // Timer function for clearing errors
@@ -189,7 +190,7 @@ const CardContextProvider = ({ children }) => {
   };
 
   return (
-    <CreateCardContext.Provider
+    <CardContext.Provider
       value={{
         error,
         editingCard,
@@ -206,9 +207,9 @@ const CardContextProvider = ({ children }) => {
       }}
     >
       {children}
-    </CreateCardContext.Provider>
+    </CardContext.Provider>
   );
 };
 
 export { CardContextProvider };
-export default CreateCardContext;
+export default CardContext;

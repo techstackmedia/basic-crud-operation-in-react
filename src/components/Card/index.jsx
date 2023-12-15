@@ -1,7 +1,7 @@
 import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import deleteIcon from '../../images/delete-icon.png';
 import editIcon from '../../images/edit-icon.png';
 
@@ -14,16 +14,6 @@ const Card = ({
   showToast
 }) => {
   const [postContent, setPostContent] = useState(item.body ?? '');
-
-  // Optionally Manage Side Effect Hook
-  // UseEffect to synchronize post content with the edited card's body when editing is active
-  useEffect(() => {
-    if (cardEdit.isEditing === true) {
-      setPostContent(cardEdit.card.body);
-      showToast('Card body editing mode!');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardEdit, id, setPostContent]);
 
   const handleTextareaChange = (e) => {
     setPostContent(e.target.value);
